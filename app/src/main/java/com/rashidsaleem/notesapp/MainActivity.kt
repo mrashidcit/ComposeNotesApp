@@ -10,10 +10,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.rashidsaleem.notesapp.core.util.Routes
+import com.rashidsaleem.notesapp.feature.addEditNote.presentation.addEditNote.AddEditNoteScreen
 import com.rashidsaleem.notesapp.feature.home.presentation.HomeScreen
 import com.rashidsaleem.notesapp.ui.theme.NotesAppTheme
 
@@ -42,26 +45,18 @@ class MainActivity : ComponentActivity() {
                             )
                         }
 
+                        composable(
+                            route = "${Routes.ADD_EDIT_NOTE}/{note_id}",
+                            arguments = listOf(
+                                navArgument("note_id") { type = NavType.StringType }
+                            )
+                        ) {
+                            AddEditNoteScreen()
+                        }
 
                     }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    NotesAppTheme {
-        Greeting("Android")
     }
 }
