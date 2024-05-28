@@ -45,10 +45,14 @@ class MainActivity : ComponentActivity() {
                         composable(
                             route = "${Routes.ADD_EDIT_NOTE}/{note_id}",
                             arguments = listOf(
-                                navArgument("note_id") { type = NavType.StringType }
+                                navArgument("note_id") { type = NavType.IntType }
                             )
                         ) {
-                            AddEditNoteScreen()
+                            AddEditNoteScreen(
+                                navigateBack = {
+                                    navController.popBackStack()
+                                }
+                            )
                         }
 
                     }
