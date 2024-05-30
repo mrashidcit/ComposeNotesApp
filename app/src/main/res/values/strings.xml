@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">NotesApp</string>
     <string name="notes_app">Notes App</string>
+    <string name="alert">Alert</string>
+    <string name="do_you_really_want_to_delete_this_note">Do you really want to delete this note?</string>
+    <string name="successfully_deleted">Successfully Deleted</string>
 </resources>

@@ -18,7 +18,7 @@ import com.rashidsaleem.notesapp.R
 import com.rashidsaleem.notesapp.core.presentation.components.AppBar
 import com.rashidsaleem.notesapp.feature.addEditNote.presentation.AddEditNoteAction
 import com.rashidsaleem.notesapp.feature.addEditNote.presentation.AddEditNoteUiState
-import com.rashidsaleem.notesapp.feature.home.domain.models.Note
+import com.rashidsaleem.notesapp.core.domain.model.Note
 import com.rashidsaleem.notesapp.ui.theme.NotesAppTheme
 
 @Composable
@@ -41,7 +41,7 @@ fun AddEditNoteContent(
                 action(AddEditNoteAction.BackIconOnClick)
             },
             trailingIconOnClick = {
-
+                action(AddEditNoteAction.DeleteIconOnClick)
             }
         )
         TextField(
@@ -67,6 +67,20 @@ fun AddEditNoteContent(
             textStyle = MaterialTheme.typography.bodyMedium,
         )
     }
+
+    if (uiState.showConfirmationDialog) {
+        DeleteConfirmationDialog(
+            onDismiss = {
+                action(AddEditNoteAction.ShowConfirmationDialog(false))
+            },
+            confirmOnClick = {
+                action(AddEditNoteAction.DeletionConfirmed)
+            },
+            dismissOnClick = {
+                action(AddEditNoteAction.ShowConfirmationDialog(false))
+            },
+        )
+    }
 }
 
 
@@ -81,7 +95,12 @@ private fun AddEditNoteContentPreview() {
 
             val uiState = remember {
                 AddEditNoteUiState(
-                    note = Note(-1, "Abc 123","Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.")
+                    note = Note(
+                        -1,
+                        "Abc 123",
+                        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                    ),
+                    showConfirmationDialog = true
                 )
             }
 

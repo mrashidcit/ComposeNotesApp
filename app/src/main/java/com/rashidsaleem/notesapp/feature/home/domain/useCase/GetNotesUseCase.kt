@@ -1,12 +1,17 @@
 package com.rashidsaleem.notesapp.feature.home.domain.useCase
 
-import com.rashidsaleem.notesapp.feature.home.domain.models.Note
-import com.rashidsaleem.notesapp.feature.home.domain.models.dummyNotes
+import com.rashidsaleem.notesapp.core.domain.model.Note
+import com.rashidsaleem.notesapp.core.domain.model.dummyNotes
+import com.rashidsaleem.notesapp.core.domain.repository.NotesRepository
+import kotlinx.coroutines.flow.Flow
 
-class GetNotesUseCase {
+class GetNotesUseCase(
+    private val repository: NotesRepository
+) {
 
-    fun execute(): List<Note> {
-        return dummyNotes()
+    suspend fun execute(): Flow<List<Note>> {
+        return repository
+            .getNotes()
     }
 
 }

@@ -1,21 +1,28 @@
 package com.rashidsaleem.notesapp.feature.home.presentation
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.rashidsaleem.notesapp.core.util.Routes
-import com.rashidsaleem.notesapp.feature.home.domain.models.Note
+import com.rashidsaleem.notesapp.core.domain.model.Note
+import com.rashidsaleem.notesapp.core.domain.repository.NotesRepository
+import com.rashidsaleem.notesapp.feature.addEditNote.presentation.AddEditNoteViewModel
 import com.rashidsaleem.notesapp.feature.home.domain.useCase.GetNotesUseCase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class HomeViewModel constructor(
-    private val getNotesUseCase: GetNotesUseCase = GetNotesUseCase(),
+class HomeViewModel(
+    repository: NotesRepository,
+    getNotesUseCase: GetNotesUseCase = GetNotesUseCase(repository),
 ) : ViewModel() {
 
+    private val _scope = viewModelScope
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState = _uiState.asStateFlow()
 
@@ -24,13 +31,16 @@ class HomeViewModel constructor(
 
     init {
 
-        val result = getNotesUseCase.execute()
-
-        _uiState.update {
-            it.copy(
-                notes = result
-            )
+        _scope.launch(Dispatchers.IO) {
+            getNotesUseCase.execute().collectLatest { items ->
+                _uiState.update {
+                    it.copy(
+                        notes = items
+                    )
+                }
+            }
         }
+
     }
 
     fun action(action: HomeAction) {
@@ -48,4 +58,15 @@ class HomeViewModel constructor(
         _event.emit(HomeEvent.NavigateNext(Routes.ADD_EDIT_NOTE, -1))
     }
 
+}
+
+@Suppress("UNCHECKED_CAST")
+class HomeViewModelFactory(private val repository: NotesRepository): ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
+            return HomeViewModel(repository) as T
+        }
+
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
 }

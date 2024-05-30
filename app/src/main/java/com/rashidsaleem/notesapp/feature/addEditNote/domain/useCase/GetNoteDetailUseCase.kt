@@ -1,7 +1,7 @@
 package com.rashidsaleem.notesapp.feature.addEditNote.domain.useCase
 
-import com.rashidsaleem.notesapp.feature.home.domain.models.Note
-import com.rashidsaleem.notesapp.feature.home.domain.models.dummyNotes
+import com.rashidsaleem.notesapp.core.domain.model.Note
+import com.rashidsaleem.notesapp.core.domain.model.dummyNotes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

@@ -2,7 +2,10 @@ package com.rashidsaleem.notesapp.feature.addEditNote.presentation
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.rashidsaleem.notesapp.core.domain.repository.NotesRepository
+import com.rashidsaleem.notesapp.feature.addEditNote.domain.useCase.DeleteNoteUseCase
 import com.rashidsaleem.notesapp.feature.addEditNote.domain.useCase.GetNoteDetailUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,6 +19,7 @@ class AddEditNoteViewModel(
 ): ViewModel() {
 
     private val getNoteDetailUseCase: GetNoteDetailUseCase = GetNoteDetailUseCase()
+    private val deleteNoteUseCase: DeleteNoteUseCase = DeleteNoteUseCase()
 
     private val _scope = viewModelScope
     private val _uiState = MutableStateFlow(AddEditNoteUiState())
@@ -25,7 +29,7 @@ class AddEditNoteViewModel(
     val event = _event.asSharedFlow()
 
     init {
-        val noteId: Int = savedStateHandle.get("note_id") ?: -1
+        val noteId: Int = savedStateHandle["note_id"] ?: -1
         _scope.launch {
             if (noteId != -1) {
                 getNoteDetailUseCase
@@ -62,11 +66,37 @@ class AddEditNoteViewModel(
             AddEditNoteAction.DeleteIconOnClick -> deleteIconOnClick()
             is AddEditNoteAction.UpdateDescription -> updateDescription(action.value)
             is AddEditNoteAction.UpdateTitle -> updateTitle(action.value)
+            AddEditNoteAction.DeletionConfirmed -> deletionConfirmed()
+            is AddEditNoteAction.ShowConfirmationDialog -> showConfirmationDialog(action.value)
+        }
+    }
+
+    private fun showConfirmationDialog(value: Boolean) {
+        _uiState.update {
+            it.copy(
+                showConfirmationDialog = value
+            )
+        }
+    }
+
+    private fun deletionConfirmed() = _scope.launch {
+        val noteId = _uiState.value.note.id
+        deleteNoteUseCase.execute(noteId)
+        _event.emit(AddEditNoteEvent.ShowToast("Successfully Deleted!"))
+        _event.emit(AddEditNoteEvent.NavigateBack)
+        _uiState.update {
+            it.copy(
+                showConfirmationDialog = false
+            )
         }
     }
 
     private fun deleteIconOnClick() {
-        TODO("Not yet implemented")
+        _uiState.update {
+            it.copy(
+                showConfirmationDialog = true
+            )
+        }
     }
 
     private fun backIconOnClick() = _scope.launch {

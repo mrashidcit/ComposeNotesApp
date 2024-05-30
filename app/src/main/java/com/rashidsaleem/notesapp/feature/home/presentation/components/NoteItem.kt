@@ -20,7 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.rashidsaleem.notesapp.feature.home.domain.models.Note
+import com.rashidsaleem.notesapp.core.domain.model.Note
 import com.rashidsaleem.notesapp.ui.theme.NotesAppTheme
 
 @Composable

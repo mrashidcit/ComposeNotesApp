@@ -1,7 +1,7 @@
 package com.rashidsaleem.notesapp.feature.home.presentation
 
-import com.rashidsaleem.notesapp.feature.home.domain.models.Note
-import com.rashidsaleem.notesapp.feature.home.domain.models.dummyNotes
+import com.rashidsaleem.notesapp.core.domain.model.Note
+import com.rashidsaleem.notesapp.core.domain.model.dummyNotes
 
 data class HomeUiState(
     val notes: List<Note> = listOf()
