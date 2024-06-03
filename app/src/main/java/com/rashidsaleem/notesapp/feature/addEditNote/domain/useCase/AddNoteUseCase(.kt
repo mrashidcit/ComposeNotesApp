@@ -1,22 +1,19 @@
 package com.rashidsaleem.notesapp.feature.addEditNote.domain.useCase
 
 import com.rashidsaleem.notesapp.core.domain.model.Note
-import com.rashidsaleem.notesapp.core.domain.model.dummyNotes
 import com.rashidsaleem.notesapp.core.domain.repository.NotesRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class GetNoteDetailUseCase(
-    private val notesRepository: NotesRepository,
+class AddNoteUseCase(
+    private val repository: NotesRepository,
 ) {
 
-    suspend fun execute(noteId: Int): Note? {
+    suspend fun execute(note: Note) {
         return withContext(Dispatchers.IO) {
+            if (note.title.isBlank() && note.description.isBlank()) return@withContext
 
-            if (noteId == -1) return@withContext null
-
-//            dummyNotes().firstOrNull { it.id == noteId }
-            notesRepository.get(noteId)
+            repository.addNote(note)
         }
     }
 

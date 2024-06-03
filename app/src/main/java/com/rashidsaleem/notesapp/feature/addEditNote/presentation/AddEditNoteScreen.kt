@@ -1,5 +1,6 @@
 package com.rashidsaleem.notesapp.feature.addEditNote.presentation
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -17,6 +18,10 @@ fun AddEditNoteScreen(
 
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
+
+    BackHandler {
+        viewModel.action(AddEditNoteAction.BackIconOnClick)
+    }
 
     LaunchedEffect(key1 = true) {
         viewModel.event.collect { event ->

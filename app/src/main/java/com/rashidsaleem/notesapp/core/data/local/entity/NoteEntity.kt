@@ -21,3 +21,11 @@ fun NoteEntity.toNote(): Note {
     )
 }
 
+fun Note.toNoteEntity(): NoteEntity {
+    return NoteEntity(
+        id = id,
+        title = title,
+        description = description,
+    )
+}
+

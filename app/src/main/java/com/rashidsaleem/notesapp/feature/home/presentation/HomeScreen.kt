@@ -17,7 +17,7 @@ fun HomeScreen(
     context: Context = LocalContext.current,
     activity: MainActivity = LocalContext.current as MainActivity,
     viewModel: HomeViewModel = viewModel {
-        HomeViewModel((activity.application as NotesApp).repository)
+        HomeViewModel(NotesApp.repository)
     },
     navigateNext: (String, Int) -> Unit,
 ) {

@@ -55,7 +55,7 @@ class HomeViewModel(
     }
 
     private fun addNewNote() = viewModelScope.launch {
-        _event.emit(HomeEvent.NavigateNext(Routes.ADD_EDIT_NOTE, -1))
+        _event.emit(HomeEvent.NavigateNext(Routes.ADD_EDIT_NOTE, 0))
     }
 
 }
@@ -66,6 +66,9 @@ class HomeViewModelFactory(private val repository: NotesRepository): ViewModelPr
         if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
             return HomeViewModel(repository) as T
         }
+//        else if (modelClass.isAssignableFrom(AddEditNoteViewModel::class.java)) {
+//            return AddEditNoteViewModel(repository) as T
+//        }
 
         throw IllegalArgumentException("Unknown ViewModel class")
     }
