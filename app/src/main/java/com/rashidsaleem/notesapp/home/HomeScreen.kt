@@ -1,6 +1,7 @@
 package com.rashidsaleem.notesapp.home
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,17 +20,23 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.rashidsaleem.notesapp.R
 import com.rashidsaleem.notesapp.ui.theme.NotesAppTheme
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    viewModel: HomeViewModel = viewModel(),
+) {
+
+    val notes = viewModel.notes
 
     Scaffold(
         topBar = {
@@ -57,7 +64,9 @@ fun HomeScreen() {
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { /*TODO*/ },
+                onClick = {
+                    viewModel.addNewNote()
+                },
                 containerColor = MaterialTheme.colorScheme.tertiary
                 ) {
                 Icon(
@@ -82,7 +91,9 @@ fun HomeScreen() {
             )
         ) {
 
-            items(20) {
+            items(notes.size) { index ->
+                val note = notes[index]
+
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -93,17 +104,23 @@ fun HomeScreen() {
                             color = Color.White,
                             shape = RoundedCornerShape(10.dp)
                         )
+                        .clip(
+                            RoundedCornerShape(10.dp)
+                        )
+                        .clickable {
+                            viewModel.listItemOnClick(note.id)
+                        }
                         .padding(
                             horizontal = 16.dp,
                             vertical = 14.dp,
                         )
                 ) {
                     Text(
-                        text = "test 2 - 1234",
+                        text = note.title,
                         fontWeight = FontWeight.Bold,
                     )
                     Text(
-                        text = "another day",
+                        text = note.description,
                     )
                 }
             }
