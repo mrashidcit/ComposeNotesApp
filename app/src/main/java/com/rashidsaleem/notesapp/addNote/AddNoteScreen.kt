@@ -1,14 +1,12 @@
 package com.rashidsaleem.notesapp.addNote
 
-import android.widget.Space
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
@@ -18,6 +16,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,10 +26,28 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rashidsaleem.notesapp.R
+import com.rashidsaleem.notesapp.models.NoteModel
 import com.rashidsaleem.notesapp.ui.theme.NotesAppTheme
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-fun AddNote() {
+fun AddNoteScreen(
+    viewModel: AddNoteViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+    navigateBack: (NoteModel) -> Unit,
+) {
+
+    val title = viewModel.title.collectAsState()
+    val description = viewModel.description.collectAsState()
+
+    LaunchedEffect(key1 = true) {
+        viewModel.event.collectLatest { event ->
+            when(event) {
+                is AddNoteViewModel.Event.NavigateBack -> navigateBack(event.note)
+            }
+        }
+    }
+
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -49,7 +67,12 @@ fun AddNote() {
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Icon(
-                modifier = Modifier.size(20.dp),
+                modifier = Modifier
+                    .size(20.dp)
+                    .clickable {
+                        viewModel.backIconOnClick()
+                    }
+                ,
                 painter = painterResource(id = R.drawable.baseline_arrow_back_24),
                 contentDescription = null,
                 tint = Color.White,
@@ -63,8 +86,8 @@ fun AddNote() {
         }
 
         TextField(
-            value = "This is my title",
-            onValueChange = {},
+            value = title.value,
+            onValueChange = { viewModel.titleOnValueChange(it) },
             modifier = Modifier.fillMaxWidth(),
             placeholder = {
                 Text(text = "Enter Title")
@@ -75,8 +98,10 @@ fun AddNote() {
         )
 
         TextField(
-            value = "This is my Description",
-            onValueChange = {},
+            value = description.value,
+            onValueChange = {
+                viewModel.descriptionOnValueChange(it)
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
@@ -95,7 +120,9 @@ fun AddNote() {
 private fun AddNotePreview() {
     NotesAppTheme {
         Surface {
-            AddNote()
+            AddNoteScreen() {
+
+            }
         }
     }
 }
