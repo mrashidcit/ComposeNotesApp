@@ -29,11 +29,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.rashidsaleem.notesapp.R
+import com.rashidsaleem.notesapp.Routes
 import com.rashidsaleem.notesapp.ui.theme.NotesAppTheme
 
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = viewModel(),
+    navigateNext: (String) -> Unit,
 ) {
 
     val notes = viewModel.notes
@@ -65,7 +67,9 @@ fun HomeScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    viewModel.addNewNote()
+//                    viewModel.addNewNote()
+                    val route = Routes.ADD_NOTE
+                      navigateNext(route)
                 },
                 containerColor = MaterialTheme.colorScheme.tertiary
                 ) {
@@ -141,7 +145,9 @@ private fun HomeScreenPreview() {
         Surface(
             color = Color.Gray,
         ) {
-            HomeScreen()
+            HomeScreen() {
+
+            }
         }
     }
 
