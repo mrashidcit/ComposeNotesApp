@@ -69,7 +69,7 @@ fun HomeScreen(
                 onClick = {
 //                    viewModel.addNewNote()
                     val route = Routes.ADD_NOTE
-                      navigateNext(route)
+                    navigateNext(route)
                 },
                 containerColor = MaterialTheme.colorScheme.tertiary
                 ) {
