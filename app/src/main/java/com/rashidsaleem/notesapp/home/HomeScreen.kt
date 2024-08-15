@@ -19,6 +19,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -28,17 +29,28 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.google.gson.Gson
 import com.rashidsaleem.notesapp.R
 import com.rashidsaleem.notesapp.Routes
+import com.rashidsaleem.notesapp.models.NoteModel
 import com.rashidsaleem.notesapp.ui.theme.NotesAppTheme
 
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = viewModel(),
+    newNote: String? = null,
     navigateNext: (String) -> Unit,
 ) {
 
     val notes = viewModel.notes
+
+    LaunchedEffect(key1 = newNote) {
+        if (newNote.isNullOrEmpty()) return@LaunchedEffect
+
+        val newNoteObj = Gson().fromJson(newNote, NoteModel::class.java)
+        viewModel.saveNote(newNoteObj)
+
+    }
 
     Scaffold(
         topBar = {

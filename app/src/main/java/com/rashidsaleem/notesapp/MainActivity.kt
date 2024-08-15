@@ -7,10 +7,12 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.gson.Gson
 import com.rashidsaleem.notesapp.addNote.AddNoteScreen
 import com.rashidsaleem.notesapp.home.HomeScreen
 import com.rashidsaleem.notesapp.ui.theme.NotesAppTheme
@@ -35,7 +37,14 @@ class MainActivity : ComponentActivity() {
                         navController = navController) {
 
                         composable(Routes.HOME) {
+                            val newNoteJsonStr = navController
+                                .currentBackStackEntry
+                                ?.savedStateHandle
+                                ?.getStateFlow("new_note", "")
+                                ?.collectAsState()
+
                             HomeScreen(
+                                newNote = newNoteJsonStr?.value,
                                 navigateNext = { route ->
                                     navController.navigate(route)
                                 }
@@ -44,7 +53,15 @@ class MainActivity : ComponentActivity() {
 
                         composable(Routes.ADD_NOTE) {
                             AddNoteScreen(
-                                navigateBack = {
+                                navigateBack = { newNote ->
+                                    val josnStr = Gson().toJson(newNote)
+                                    navController
+                                        .previousBackStackEntry
+                                        ?.savedStateHandle
+                                        ?.set("new_note", josnStr)
+
+                                    navController.popBackStack()
+
                                     Log.d(TAG, "navigateBack: $it")
                                 }
                             )

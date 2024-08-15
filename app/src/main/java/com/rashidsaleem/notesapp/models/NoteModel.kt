@@ -11,7 +11,8 @@ data class NoteModel(
 fun dummyNotes(): List<NoteModel> {
     val items = arrayListOf<NoteModel>()
 
-    for (i in 1..20) {
+//    for (i in 1..20) {
+    for (i in 1..3) {
         items.add(
             NoteModel(i, "Title $i", "Description $i")
         )
