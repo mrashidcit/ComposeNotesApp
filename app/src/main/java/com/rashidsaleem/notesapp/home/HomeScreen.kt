@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.FloatingActionButton
@@ -34,6 +33,7 @@ import com.rashidsaleem.notesapp.R
 import com.rashidsaleem.notesapp.Routes
 import com.rashidsaleem.notesapp.models.NoteModel
 import com.rashidsaleem.notesapp.ui.theme.NotesAppTheme
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun HomeScreen(
@@ -42,7 +42,7 @@ fun HomeScreen(
     navigateNext: (String) -> Unit,
 ) {
 
-    val notes = viewModel.notes
+    val notes = viewModel.notesList
 
     LaunchedEffect(key1 = newNote) {
         if (newNote.isNullOrEmpty()) return@LaunchedEffect
@@ -50,6 +50,14 @@ fun HomeScreen(
         val newNoteObj = Gson().fromJson(newNote, NoteModel::class.java)
         viewModel.saveNote(newNoteObj)
 
+    }
+
+    LaunchedEffect(key1 = true) {
+        viewModel.eventFlow.collectLatest { event ->
+            when (event) {
+                is HomeViewModel.HomeEvent.NavigateNext -> navigateNext(event.route)
+            }
+        }
     }
 
     Scaffold(
@@ -80,7 +88,7 @@ fun HomeScreen(
             FloatingActionButton(
                 onClick = {
 //                    viewModel.addNewNote()
-                    val route = Routes.ADD_NOTE
+                    val route = Routes.ADD_NOTE + "/-1"
                     navigateNext(route)
                 },
                 containerColor = MaterialTheme.colorScheme.tertiary
