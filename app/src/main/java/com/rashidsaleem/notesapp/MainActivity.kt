@@ -65,16 +65,8 @@ class MainActivity : ComponentActivity() {
                                 )
                             ) {
                             AddNoteScreen(
-                                navigateBack = { newNote ->
-                                    val josnStr = Gson().toJson(newNote)
-                                    navController
-                                        .previousBackStackEntry
-                                        ?.savedStateHandle
-                                        ?.set("new_note", josnStr)
-
+                                navigateBack = {
                                     navController.popBackStack()
-
-                                    Log.d(TAG, "navigateBack: $it")
                                 }
                             )
                         }

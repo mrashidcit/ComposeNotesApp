@@ -20,6 +20,7 @@ class AddNoteViewModel(
 
     private val TAG = "AddNoteViewModel"
 
+    private val _scope = viewModelScope
     private val repository: NotesRepository = NotesRepository.getInstance()
     private var _noteId: Int = -1
     private var _title: MutableStateFlow<String>  = MutableStateFlow("")
@@ -56,7 +57,7 @@ class AddNoteViewModel(
         _description.value = value
     }
 
-    fun backIconOnClick() {
+    fun backIconOnClick() = _scope.launch {
 
         val noteModel = NoteModel(
             id = _noteId,
@@ -65,17 +66,27 @@ class AddNoteViewModel(
         )
 
         // Save Note
+        val isNoteEmpty = noteModel.let {
+            it.title.isEmpty() && it.description.isEmpty()
+        }
+        if (isNoteEmpty) return@launch
+
+        if (noteModel.id == -1) {
+            repository.insert(noteModel)
+        } else {
+            repository.update(noteModel)
+        }
 
         // Navigate Back
         viewModelScope.launch(Dispatchers.Main) {
-            _event.emit(Event.NavigateBack(noteModel))
+            _event.emit(Event.NavigateBack)
         }
 
     }
 
 
     sealed class Event {
-        data class NavigateBack(val note: NoteModel): Event()
+        data object NavigateBack: Event()
     }
 
 }

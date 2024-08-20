@@ -33,7 +33,7 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun AddNoteScreen(
     viewModel: AddNoteViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
-    navigateBack: (NoteModel) -> Unit,
+    navigateBack: () -> Unit,
 ) {
 
     val title = viewModel.title.collectAsState()
@@ -42,7 +42,7 @@ fun AddNoteScreen(
     LaunchedEffect(key1 = true) {
         viewModel.event.collectLatest { event ->
             when(event) {
-                is AddNoteViewModel.Event.NavigateBack -> navigateBack(event.note)
+                is AddNoteViewModel.Event.NavigateBack -> navigateBack()
             }
         }
     }
