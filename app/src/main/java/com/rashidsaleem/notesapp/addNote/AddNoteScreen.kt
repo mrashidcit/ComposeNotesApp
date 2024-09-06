@@ -38,6 +38,7 @@ fun AddNoteScreen(
 
     val title = viewModel.title.collectAsState()
     val description = viewModel.description.collectAsState()
+    val showConfirmationDialog = viewModel.showConfirmationDialog.collectAsState()
 
     LaunchedEffect(key1 = true) {
         viewModel.event.collectLatest { event ->
@@ -78,7 +79,12 @@ fun AddNoteScreen(
                 tint = Color.White,
             )
             Icon(
-                modifier = Modifier.size(20.dp),
+                modifier = Modifier
+                    .size(20.dp)
+                    .clickable {
+                        viewModel.showConfirmationDialog(true)
+                    }
+                ,
                 painter = painterResource(id = R.drawable.baseline_delete_24),
                 contentDescription = null,
                 tint = Color.White,
@@ -112,6 +118,14 @@ fun AddNoteScreen(
         )
 
     }
+
+    if (showConfirmationDialog.value) {
+        ConfirmationDialog(
+            confirmOnClick = { viewModel.deleteNote() },
+            dismissOnClick = { viewModel.showConfirmationDialog(false) }
+        )
+    }
+
 
 }
 

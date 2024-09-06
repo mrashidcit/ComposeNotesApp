@@ -42,6 +42,16 @@ class HomeViewModel: ViewModel() {
             }
         }
 
+        _scope.launch(Dispatchers.IO) {
+            repository.deleteListener.collect { itemId ->
+                val itemIndex = notesList.indexOfFirst { it.id == itemId }
+
+                if (itemIndex != -1) {
+                    notesList.removeAt(itemIndex)
+                }
+            }
+        }
+
 
 
     }

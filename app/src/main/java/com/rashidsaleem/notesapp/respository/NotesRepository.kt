@@ -18,6 +18,11 @@ class NotesRepository private constructor() {
     private val _updateListener: MutableSharedFlow<NoteModel> = MutableSharedFlow<NoteModel>()
     val updateListener: SharedFlow<NoteModel> = _updateListener.asSharedFlow()
 
+    private val _deleteListener: MutableSharedFlow<Int> = MutableSharedFlow<Int>()
+    val deleteListener: SharedFlow<Int> = _deleteListener.asSharedFlow()
+
+
+
 
 
     companion object {
@@ -57,6 +62,15 @@ class NotesRepository private constructor() {
         val itemIndex = items.indexOfFirst { it.id == item.id }
         items[itemIndex] = item
         _updateListener.emit(item)
+    }
+
+    suspend fun delete(noteId: Int) {
+        val itemIndex = items.indexOfFirst { it.id == noteId }
+
+        if (itemIndex == -1) return
+
+        items.removeAt(itemIndex)
+        _deleteListener.emit(noteId)
     }
 
 }
