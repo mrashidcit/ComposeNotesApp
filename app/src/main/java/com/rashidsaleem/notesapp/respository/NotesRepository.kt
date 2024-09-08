@@ -1,15 +1,27 @@
 package com.rashidsaleem.notesapp.respository
 
+import com.rashidsaleem.notesapp.NotesApp
+import com.rashidsaleem.notesapp.data.local.NoteDao
+import com.rashidsaleem.notesapp.data.local.toEntity
+import com.rashidsaleem.notesapp.data.local.toModel
 import com.rashidsaleem.notesapp.models.NoteModel
-import com.rashidsaleem.notesapp.models.dummyNotes
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 
-class NotesRepository private constructor() {
+class NotesRepository private constructor(
+    private val noteDao: NoteDao
+) {
 
-    private val items = arrayListOf<NoteModel>().apply {
-        addAll(dummyNotes())
+    companion object {
+
+        private var _instance: NotesRepository? = null
+        fun getInstance(): NotesRepository {
+            if (_instance == null)
+                _instance = NotesRepository(NotesApp.appDatabase.noteDao())
+
+            return _instance as NotesRepository
+        }
     }
 
     private val _insertionListener: MutableSharedFlow<NoteModel> = MutableSharedFlow<NoteModel>()
@@ -22,54 +34,36 @@ class NotesRepository private constructor() {
     val deleteListener: SharedFlow<Int> = _deleteListener.asSharedFlow()
 
 
-
-
-
-    companion object {
-
-        private var _instance: NotesRepository? = null
-
-        fun getInstance(): NotesRepository {
-            if (_instance == null)
-                _instance = NotesRepository()
-
-            return _instance as NotesRepository
-
-        }
-
-    }
-
     fun getAll(): List<NoteModel> {
-        return items
+        val items = noteDao.getAll()
+        return items.map { it.toModel() }
     }
 
     fun get(id: Int) : NoteModel {
-        return items.first { it.id == id }
+        val item = noteDao.get(id)
+        return item.toModel()
     }
 
     suspend fun insert(item: NoteModel): Int {
 
-        val newId = items.size + 1
+        val newEntity = item.toEntity()
+        val newId = noteDao.insertItem(newEntity)
+
         val newNote = item.copy(
             id = newId
         )
-        items.add(newNote)
         _insertionListener.emit(newNote)
         return newId
     }
 
     suspend fun update(item: NoteModel) {
-        val itemIndex = items.indexOfFirst { it.id == item.id }
-        items[itemIndex] = item
+        val updatedEntity = item.toEntity()
+        noteDao.updateItem(updatedEntity)
         _updateListener.emit(item)
     }
 
     suspend fun delete(noteId: Int) {
-        val itemIndex = items.indexOfFirst { it.id == noteId }
-
-        if (itemIndex == -1) return
-
-        items.removeAt(itemIndex)
+        noteDao.delete(noteId)
         _deleteListener.emit(noteId)
     }
 
