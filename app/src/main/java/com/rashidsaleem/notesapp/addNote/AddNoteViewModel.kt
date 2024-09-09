@@ -26,6 +26,8 @@ class AddNoteViewModel(
     val title = _title.asStateFlow()
     private var _description = MutableStateFlow<String>("")
     val description = _description.asStateFlow()
+    private val _showConfirmationDialog = MutableStateFlow<Boolean>(false)
+    val showConfirmationDialog = _showConfirmationDialog.asStateFlow()
 
     private val _event = MutableSharedFlow<Event>()
     val event = _event.asSharedFlow()
@@ -77,6 +79,28 @@ class AddNoteViewModel(
         }
 
     }
+
+    fun hideConfirmationDialog() {
+        _showConfirmationDialog.value = false
+    }
+
+    fun showConfirmationDialog() {
+        _showConfirmationDialog.value = true
+    }
+
+    fun deleteNote() = viewModelScope.launch {
+        val itemId = _noteId
+        repository.delete(itemId)
+
+        hideConfirmationDialog()
+        // Navigate Back
+        viewModelScope.launch(Dispatchers.Main) {
+            _event.emit(Event.NavigateBack)
+        }
+    }
+
+
+
 
 
     sealed class Event {
