@@ -40,14 +40,7 @@ class MainActivity : ComponentActivity() {
                         navController = navController) {
 
                         composable(Routes.HOME) {
-                            val newNoteJsonStr = navController
-                                .currentBackStackEntry
-                                ?.savedStateHandle
-                                ?.getStateFlow("new_note", "")
-                                ?.collectAsState()
-
                             HomeScreen(
-                                newNote = newNoteJsonStr?.value,
                                 navigateNext = { route ->
                                     navController.navigate(route)
                                 }
@@ -65,12 +58,7 @@ class MainActivity : ComponentActivity() {
                                 )
                             ) {
                             AddNoteScreen(
-                                navigateBack = { newNote ->
-                                    val josnStr = Gson().toJson(newNote)
-                                    navController
-                                        .previousBackStackEntry
-                                        ?.savedStateHandle
-                                        ?.set("new_note", josnStr)
+                                navigateBack = {
 
                                     navController.popBackStack()
 

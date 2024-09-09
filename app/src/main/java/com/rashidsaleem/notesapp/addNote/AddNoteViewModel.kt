@@ -56,7 +56,7 @@ class AddNoteViewModel(
         _description.value = value
     }
 
-    fun backIconOnClick() {
+    fun backIconOnClick() = viewModelScope.launch(Dispatchers.IO) {
 
         val noteModel = NoteModel(
             id = _noteId,
@@ -65,17 +65,22 @@ class AddNoteViewModel(
         )
 
         // Save Note
+        if (noteModel.id == -1) {
+            repository.insert(noteModel)
+        } else {
+            repository.update(noteModel)
+        }
 
         // Navigate Back
         viewModelScope.launch(Dispatchers.Main) {
-            _event.emit(Event.NavigateBack(noteModel))
+            _event.emit(Event.NavigateBack)
         }
 
     }
 
 
     sealed class Event {
-        data class NavigateBack(val note: NoteModel): Event()
+        data object NavigateBack: Event()
     }
 
 }

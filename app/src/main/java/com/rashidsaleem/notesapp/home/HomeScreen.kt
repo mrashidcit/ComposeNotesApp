@@ -38,19 +38,11 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = viewModel(),
-    newNote: String? = null,
     navigateNext: (String) -> Unit,
 ) {
 
     val notes = viewModel.notesList
 
-    LaunchedEffect(key1 = newNote) {
-        if (newNote.isNullOrEmpty()) return@LaunchedEffect
-
-        val newNoteObj = Gson().fromJson(newNote, NoteModel::class.java)
-        viewModel.saveNote(newNoteObj)
-
-    }
 
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->

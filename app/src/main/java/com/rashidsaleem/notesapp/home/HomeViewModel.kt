@@ -11,6 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class HomeViewModel: ViewModel() {
@@ -29,38 +30,29 @@ class HomeViewModel: ViewModel() {
         val items = repository.getAll()
         notesList.addAll(items)
 
+        _scope.launch {
+            repository.newNoteInsertionListener.collect { newNote ->
+                notesList.add(0, newNote)
+            }
+        }
+
+        _scope.launch {
+            repository.updateNoteInsertionListener.collect { updateNote ->
+                val itemIndex = notesList.indexOfFirst { it.id == updateNote.id }
+
+                if (itemIndex != -1) {
+                    notesList[itemIndex] = updateNote
+                }
+
+            }
+        }
+
     }
 
     fun listItemOnClick(id: Int) = _scope.launch(Dispatchers.Main) {
         Log.d(TAG, "listItemOnClick: $id")
         val route = Routes.ADD_NOTE + "/$id"
         _eventFlow.emit(HomeEvent.NavigateNext(route))
-    }
-
-    fun addNewNote() {
-        Log.d(TAG, "addNewNote: ")
-    }
-
-    fun saveNote(value: NoteModel) {
-        Log.d(TAG, "saveNote: $value")
-        val isNoteEmpty = value.let {
-            it.title.isEmpty() && it.description.isEmpty()
-        }
-        if (isNoteEmpty) return
-
-        if (value.id == -1) {
-            val newId = repository.insert(value)
-            val newValue = value.copy(
-                id = newId
-            )
-            notesList.add(newValue)
-        } else {
-            repository.update(value)
-            val itemIndex = notesList.indexOfFirst { it.id == value.id }
-            notesList[itemIndex] = value
-        }
-
-
     }
 
 
