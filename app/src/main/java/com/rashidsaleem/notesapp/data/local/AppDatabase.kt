@@ -18,6 +18,7 @@ abstract class AppDatabase: RoomDatabase() {
                     AppDatabase::class.java,
                     "AppDatabase"
                 )
+                    .allowMainThreadQueries()
                     .build()
             }
 

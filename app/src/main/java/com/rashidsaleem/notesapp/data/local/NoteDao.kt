@@ -11,7 +11,7 @@ import androidx.room.Update
 interface NoteDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertItem(item: NoteEntity): Int
+    fun insertItem(item: NoteEntity): Long
 
     @Query("SELECT * FROM notes")
     fun getAll(): List<NoteEntity>

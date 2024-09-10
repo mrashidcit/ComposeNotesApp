@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
-
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -21,6 +19,9 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
+        }
+        ksp {
+            arg("room.schemaLocation", "$projectDir/schemas")
         }
     }
 
@@ -57,7 +58,7 @@ composeCompiler {
     enableStrongSkippingMode = true
 
     reportsDestination = layout.buildDirectory.dir("compose_compiler")
-    stabilityConfigurationFile = rootProject.layout.projectDirectory.file("stability_config.conf")
+//    stabilityConfigurationFile = rootProject.layout.projectDirectory.file("stability_config.conf")
 }
 
 dependencies {
@@ -78,8 +79,6 @@ dependencies {
     // ViewModel
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
 
-
-
     implementation("com.google.code.gson:gson:2.11.0")
 
     // Room DB
@@ -88,7 +87,6 @@ dependencies {
     ksp("androidx.room:room-compiler:$room_version")
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:$room_version")
-
 
     // test
     testImplementation("junit:junit:4.13.2")

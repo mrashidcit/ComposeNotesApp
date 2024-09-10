@@ -47,7 +47,7 @@ class NotesRepository private constructor(
     suspend fun insert(item: NoteModel): Int {
 
         val newEntity = item.toEntity()
-        val newId = noteDao.insertItem(newEntity)
+        val newId = noteDao.insertItem(newEntity).toInt()
 
         val newNote = item.copy(
             id = newId
