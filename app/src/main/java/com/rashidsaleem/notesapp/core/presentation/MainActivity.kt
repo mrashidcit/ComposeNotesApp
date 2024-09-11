@@ -1,8 +1,6 @@
-package com.rashidsaleem.notesapp
+package com.rashidsaleem.notesapp.core.presentation
 
-import android.icu.text.MessagePattern.ArgType
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,10 +13,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.google.gson.Gson
-import com.rashidsaleem.notesapp.addNote.AddNoteScreen
-import com.rashidsaleem.notesapp.home.HomeScreen
-import com.rashidsaleem.notesapp.ui.theme.NotesAppTheme
+import com.rashidsaleem.notesapp.feature_home.presentation.HomeRoutes
+import com.rashidsaleem.notesapp.feature_home.presentation.addNote.AddNoteScreen
+import com.rashidsaleem.notesapp.feature_home.presentation.home.HomeScreen
+import com.rashidsaleem.notesapp.core.presentation.ui.theme.NotesAppTheme
 
 class MainActivity : ComponentActivity() {
 
@@ -36,10 +34,10 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
 
                     NavHost(
-                        startDestination = Routes.HOME,
+                        startDestination = HomeRoutes.HOME,
                         navController = navController) {
 
-                        composable(Routes.HOME) {
+                        composable(HomeRoutes.HOME) {
                             val newNoteJsonStr = navController
                                 .currentBackStackEntry
                                 ?.savedStateHandle
@@ -55,7 +53,7 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable(
-                                route = Routes.ADD_NOTE + "/{id}",
+                                route = HomeRoutes.ADD_NOTE + "/{id}",
                                 arguments = listOf(
                                     navArgument("id") {
                                         this.type = NavType.IntType

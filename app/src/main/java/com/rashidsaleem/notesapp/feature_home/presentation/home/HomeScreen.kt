@@ -1,4 +1,4 @@
-package com.rashidsaleem.notesapp.home
+package com.rashidsaleem.notesapp.feature_home.presentation.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -30,9 +30,9 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.gson.Gson
 import com.rashidsaleem.notesapp.R
-import com.rashidsaleem.notesapp.Routes
-import com.rashidsaleem.notesapp.models.NoteModel
-import com.rashidsaleem.notesapp.ui.theme.NotesAppTheme
+import com.rashidsaleem.notesapp.feature_home.presentation.HomeRoutes
+import com.rashidsaleem.notesapp.feature_home.domain.models.NoteModel
+import com.rashidsaleem.notesapp.core.presentation.ui.theme.NotesAppTheme
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -88,7 +88,7 @@ fun HomeScreen(
             FloatingActionButton(
                 onClick = {
 //                    viewModel.addNewNote()
-                    val route = Routes.ADD_NOTE + "/-1"
+                    val route = HomeRoutes.ADD_NOTE + "/-1"
                     navigateNext(route)
                 },
                 containerColor = MaterialTheme.colorScheme.tertiary

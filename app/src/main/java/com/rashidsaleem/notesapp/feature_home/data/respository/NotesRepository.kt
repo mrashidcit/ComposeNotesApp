@@ -1,10 +1,10 @@
-package com.rashidsaleem.notesapp.respository
+package com.rashidsaleem.notesapp.feature_home.data.respository
 
 import com.rashidsaleem.notesapp.NotesApp
 import com.rashidsaleem.notesapp.data.local.NoteDao
 import com.rashidsaleem.notesapp.data.local.toEntity
 import com.rashidsaleem.notesapp.data.local.toModel
-import com.rashidsaleem.notesapp.models.NoteModel
+import com.rashidsaleem.notesapp.feature_home.domain.models.NoteModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow

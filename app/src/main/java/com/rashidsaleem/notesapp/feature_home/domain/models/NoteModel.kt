@@ -1,4 +1,4 @@
-package com.rashidsaleem.notesapp.models
+package com.rashidsaleem.notesapp.feature_home.domain.models
 
 data class NoteModel(
     val id: Int,
