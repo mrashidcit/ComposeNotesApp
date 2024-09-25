@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.rashidsaleem.notesapp.models.NoteModel
 import com.rashidsaleem.notesapp.respository.NotesRepository
 import kotlinx.coroutines.Dispatchers
@@ -29,21 +30,23 @@ class AddNoteViewModel(
 
     private val _event = MutableSharedFlow<Event>()
     val event = _event.asSharedFlow()
+    val _scope = viewModelScope
 
     init {
-        val noteId = savedStateHandle
-            .get<Int>("id") ?: -1
-        _noteId = noteId
 
-        Log.d(TAG, "init: noteId = $noteId")
+        _scope.launch(Dispatchers.IO) {
+            val noteId = savedStateHandle
+                .get<Int>("id") ?: -1
+            _noteId = noteId
 
-        if (noteId != -1) {
-            val note = repository.get(noteId)
-            _title.value = note.title
-            _description.value = note.description
+            Log.d(TAG, "init: noteId = $noteId")
+
+            if (noteId != -1) {
+                val note = repository.get(noteId)
+                _title.value = note.title
+                _description.value = note.description
+            }
         }
-
-
 
     }
 
