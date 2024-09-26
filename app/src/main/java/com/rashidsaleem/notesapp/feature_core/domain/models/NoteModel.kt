@@ -1,6 +1,6 @@
-package com.rashidsaleem.notesapp.models
+package com.rashidsaleem.notesapp.feature_core.domain.models
 
-import com.rashidsaleem.notesapp.core.data.NoteEntity
+import com.rashidsaleem.notesapp.feature_core.data.NoteEntity
 
 data class NoteModel(
     val id: Int,

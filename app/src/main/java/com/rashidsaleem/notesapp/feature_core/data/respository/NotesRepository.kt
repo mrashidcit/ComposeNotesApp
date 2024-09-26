@@ -1,12 +1,11 @@
-package com.rashidsaleem.notesapp.respository
+package com.rashidsaleem.notesapp.feature_core.data.respository
 
 import com.rashidsaleem.notesapp.NotesApp
-import com.rashidsaleem.notesapp.core.data.AppDatabase
-import com.rashidsaleem.notesapp.core.data.NoteDao
-import com.rashidsaleem.notesapp.core.data.toNoteModel
-import com.rashidsaleem.notesapp.models.NoteModel
-import com.rashidsaleem.notesapp.models.dummyNotes
-import com.rashidsaleem.notesapp.models.toNoteEntity
+import com.rashidsaleem.notesapp.feature_core.data.AppDatabase
+import com.rashidsaleem.notesapp.feature_core.data.NoteDao
+import com.rashidsaleem.notesapp.feature_core.data.toNoteModel
+import com.rashidsaleem.notesapp.feature_core.domain.models.NoteModel
+import com.rashidsaleem.notesapp.feature_core.domain.models.toNoteEntity
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -21,6 +20,8 @@ class NotesRepository private constructor() {
     private val _updateNoteInsertionListener = MutableSharedFlow<NoteModel>()
     val updateNoteInsertionListener: SharedFlow<NoteModel> = _updateNoteInsertionListener.asSharedFlow()
 
+    private val _deleteNoteListener = MutableSharedFlow<Int>()
+    val deleteNoteListener: SharedFlow<Int> = _deleteNoteListener.asSharedFlow()
 
 
     companion object {
@@ -68,6 +69,11 @@ class NotesRepository private constructor() {
         dao.updateItem(updatedEntity)
         _updateNoteInsertionListener.emit(item)
 
+    }
+
+    suspend fun delete(id: Int) {
+        dao.deleteItem(id)
+        _deleteNoteListener.emit(id)
     }
 
 }

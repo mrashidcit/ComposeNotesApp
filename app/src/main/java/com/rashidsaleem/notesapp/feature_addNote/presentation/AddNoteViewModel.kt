@@ -1,16 +1,14 @@
-package com.rashidsaleem.notesapp.addNote
+package com.rashidsaleem.notesapp.feature_addNote.presentation
 
 import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.rashidsaleem.notesapp.models.NoteModel
-import com.rashidsaleem.notesapp.respository.NotesRepository
+import com.rashidsaleem.notesapp.feature_core.domain.models.NoteModel
+import com.rashidsaleem.notesapp.feature_core.data.respository.NotesRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -27,6 +25,8 @@ class AddNoteViewModel(
     val title = _title.asStateFlow()
     private var _description = MutableStateFlow<String>("")
     val description = _description.asStateFlow()
+    private val _showConfirmationDialog = MutableStateFlow<Boolean>(false)
+    val showConfirmationDialog = _showConfirmationDialog.asStateFlow()
 
     private val _event = MutableSharedFlow<Event>()
     val event = _event.asSharedFlow()
@@ -79,6 +79,25 @@ class AddNoteViewModel(
             _event.emit(Event.NavigateBack)
         }
 
+    }
+
+    fun hideConfirmationDialog() {
+        _showConfirmationDialog.value = false
+    }
+
+    fun showConfirmationDialog() {
+        _showConfirmationDialog.value = true
+    }
+
+    fun deleteNote() = viewModelScope.launch(Dispatchers.IO) {
+        val itemId = _noteId
+        repository.delete(itemId)
+
+        hideConfirmationDialog()
+        // Navigate Back
+        viewModelScope.launch(Dispatchers.Main) {
+            _event.emit(Event.NavigateBack)
+        }
     }
 
 

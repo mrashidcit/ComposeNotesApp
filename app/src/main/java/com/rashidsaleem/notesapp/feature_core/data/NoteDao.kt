@@ -1,4 +1,4 @@
-package com.rashidsaleem.notesapp.core.data
+package com.rashidsaleem.notesapp.feature_core.data
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -11,7 +11,7 @@ interface NoteDao {
     @Insert
     fun insertItem(item: NoteEntity): Long
 
-    @Query("SELECT * FROM notes")
+    @Query("SELECT * FROM notes ORDER BY id DESC")
     fun getAll(): List<NoteEntity>
 
     @Query("SELECT * FROM notes WHERE id = :id LIMIT 1")

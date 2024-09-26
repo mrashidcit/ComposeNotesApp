@@ -1,4 +1,4 @@
-package com.rashidsaleem.notesapp.core.data
+package com.rashidsaleem.notesapp.feature_core.data
 
 import android.content.Context
 import androidx.room.Database

@@ -1,6 +1,5 @@
 package com.rashidsaleem.notesapp
 
-import android.icu.text.MessagePattern.ArgType
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -8,16 +7,14 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.google.gson.Gson
-import com.rashidsaleem.notesapp.addNote.AddNoteScreen
-import com.rashidsaleem.notesapp.home.HomeScreen
+import com.rashidsaleem.notesapp.feature_addNote.presentation.AddNoteScreen
+import com.rashidsaleem.notesapp.feature_home.presentation.HomeScreen
 import com.rashidsaleem.notesapp.ui.theme.NotesAppTheme
 
 class MainActivity : ComponentActivity() {
