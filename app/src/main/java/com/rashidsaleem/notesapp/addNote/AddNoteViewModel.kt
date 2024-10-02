@@ -28,6 +28,7 @@ class AddNoteViewModel(
     val description = _description.asStateFlow()
     private val _showConfirmationDialog = MutableStateFlow<Boolean>(false)
     val showConfirmationDialog = _showConfirmationDialog.asStateFlow()
+    private val _scope = viewModelScope
 
     private val _event = MutableSharedFlow<Event>()
     val event = _event.asSharedFlow()
@@ -39,11 +40,14 @@ class AddNoteViewModel(
 
         Log.d(TAG, "init: noteId = $noteId")
 
-        if (noteId != -1) {
-            val note = repository.get(noteId)
-            _title.value = note.title
-            _description.value = note.description
+        _scope.launch(Dispatchers.IO) {
+            if (noteId != -1) {
+                val note = repository.get(noteId)
+                _title.value = note.title
+                _description.value = note.description
+            }
         }
+
 
 
 
@@ -88,7 +92,7 @@ class AddNoteViewModel(
         _showConfirmationDialog.value = true
     }
 
-    fun deleteNote() = viewModelScope.launch {
+    fun deleteNote() = viewModelScope.launch(Dispatchers.IO) {
         val itemId = _noteId
         repository.delete(itemId)
 

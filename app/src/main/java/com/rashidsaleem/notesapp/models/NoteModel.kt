@@ -1,10 +1,20 @@
 package com.rashidsaleem.notesapp.models
 
+import com.rashidsaleem.notesapp.data.local.NoteEntity
+
 data class NoteModel(
     val id: Int,
     val title: String,
     val description: String,
 )
+
+fun NoteModel.toEntity(): NoteEntity {
+    return NoteEntity(
+        id = if (id != -1) id else null,
+        title = title,
+        description = description,
+    )
+}
 
 
 

@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.devtools.ksp")
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 android {
@@ -68,6 +70,16 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.7.7")
 
     implementation("com.google.code.gson:gson:2.11.0")
+
+    // Room
+    val room_version = "2.6.1"
+    implementation("androidx.room:room-runtime:$room_version")
+    annotationProcessor("androidx.room:room-compiler:$room_version")
+    ksp("androidx.room:room-compiler:$room_version")
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation("androidx.room:room-ktx:$room_version")
+
+
 
     // test
     testImplementation("junit:junit:4.13.2")

@@ -8,6 +8,7 @@ import com.rashidsaleem.notesapp.Routes
 import com.rashidsaleem.notesapp.models.NoteModel
 import com.rashidsaleem.notesapp.respository.NotesRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -27,8 +28,11 @@ class HomeViewModel: ViewModel() {
 
     init {
 
-        val items = repository.getAll()
-        notesList.addAll(items)
+        _scope.launch(Dispatchers.IO) {
+            val items = repository.getAll()
+            delay(500L)
+            notesList.addAll(items)
+        }
 
         _scope.launch {
             repository.newNoteInsertionListener.collect { newNote ->
