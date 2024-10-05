@@ -26,21 +26,21 @@ class NotesListenerUseCase {
 
                 launch {
                     repository.newNoteInsertionListener.collect { newItem ->
-                        channel.send(NoteEvents.Insertion(newItem))
+                        send(NoteEvents.Insertion(newItem))
                     }
                 }
 
                 launch {
                     repository.updateNoteInsertionListener.collect { updatedItem ->
-                        emit(NoteEvents.Update(updatedItem))
+                        send(NoteEvents.Update(updatedItem))
                     }
                 }
-//
-//                launch {
-//                    repository.deleteNoteListener.collect { id ->
-//                        emit(NoteEvents.Delete(id))
-//                    }
-//                }
+
+                launch {
+                    repository.deleteNoteListener.collect { id ->
+                        send(NoteEvents.Delete(id))
+                    }
+                }
 
             }
         }

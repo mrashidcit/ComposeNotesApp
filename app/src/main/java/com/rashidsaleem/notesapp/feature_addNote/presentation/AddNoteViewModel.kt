@@ -4,6 +4,9 @@ import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.rashidsaleem.notesapp.feature_addNote.domain.AddNoteUseCase
+import com.rashidsaleem.notesapp.feature_addNote.domain.DeleteNoteUseCase
+import com.rashidsaleem.notesapp.feature_addNote.domain.GetNoteUseCase
 import com.rashidsaleem.notesapp.feature_core.domain.models.NoteModel
 import com.rashidsaleem.notesapp.feature_core.data.respository.NotesRepository
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +22,9 @@ class AddNoteViewModel(
 
     private val TAG = "AddNoteViewModel"
 
-    private val repository: NotesRepository = NotesRepository.getInstance()
+    private val getNoteUseCase: GetNoteUseCase = GetNoteUseCase.getInstance()
+    private val addNoteUseCase: AddNoteUseCase = AddNoteUseCase.getInstance()
+    private val deleteNoteUseCase: DeleteNoteUseCase = DeleteNoteUseCase.getInstance()
     private var _noteId: Int = -1
     private var _title: MutableStateFlow<String>  = MutableStateFlow("")
     val title = _title.asStateFlow()
@@ -42,7 +47,7 @@ class AddNoteViewModel(
             Log.d(TAG, "init: noteId = $noteId")
 
             if (noteId != -1) {
-                val note = repository.get(noteId)
+                val note = getNoteUseCase.execute(noteId)
                 _title.value = note.title
                 _description.value = note.description
             }
@@ -68,11 +73,7 @@ class AddNoteViewModel(
         )
 
         // Save Note
-        if (noteModel.id == -1) {
-            repository.insert(noteModel)
-        } else {
-            repository.update(noteModel)
-        }
+        addNoteUseCase.execute(noteModel)
 
         // Navigate Back
         viewModelScope.launch(Dispatchers.Main) {
@@ -91,7 +92,7 @@ class AddNoteViewModel(
 
     fun deleteNote() = viewModelScope.launch(Dispatchers.IO) {
         val itemId = _noteId
-        repository.delete(itemId)
+        deleteNoteUseCase.execute(itemId)
 
         hideConfirmationDialog()
         // Navigate Back
