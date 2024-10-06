@@ -29,7 +29,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.rashidsaleem.notesapp.R
-import com.rashidsaleem.notesapp.Routes
 import com.rashidsaleem.notesapp.ui.theme.NotesAppTheme
 import kotlinx.coroutines.flow.collectLatest
 
@@ -45,7 +44,7 @@ fun HomeScreen(
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
-                is HomeViewModel.HomeEvent.NavigateNext -> navigateNext(event.route)
+                is HomeEvent.NavigateNext -> navigateNext(event.route)
             }
         }
     }
@@ -77,9 +76,7 @@ fun HomeScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-//                    viewModel.addNewNote()
-                    val route = Routes.ADD_NOTE + "/-1"
-                    navigateNext(route)
+                    viewModel.action(HomeAction.AddNewNote)
                 },
                 containerColor = MaterialTheme.colorScheme.tertiary
                 ) {
@@ -122,7 +119,7 @@ fun HomeScreen(
                             RoundedCornerShape(10.dp)
                         )
                         .clickable {
-                            viewModel.listItemOnClick(note.id)
+                            viewModel.action(HomeAction.ListItemOnClick(note.id))
                         }
                         .padding(
                             horizontal = 16.dp,

@@ -8,7 +8,6 @@ import com.rashidsaleem.notesapp.feature_addNote.domain.AddNoteUseCase
 import com.rashidsaleem.notesapp.feature_addNote.domain.DeleteNoteUseCase
 import com.rashidsaleem.notesapp.feature_addNote.domain.GetNoteUseCase
 import com.rashidsaleem.notesapp.feature_core.domain.models.NoteModel
-import com.rashidsaleem.notesapp.feature_core.data.respository.NotesRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,7 +32,7 @@ class AddNoteViewModel(
     private val _showConfirmationDialog = MutableStateFlow<Boolean>(false)
     val showConfirmationDialog = _showConfirmationDialog.asStateFlow()
 
-    private val _event = MutableSharedFlow<Event>()
+    private val _event = MutableSharedFlow<AddNoteEvent>()
     val event = _event.asSharedFlow()
     val _scope = viewModelScope
 
@@ -52,19 +51,30 @@ class AddNoteViewModel(
                 _description.value = note.description
             }
         }
-
     }
 
-    fun titleOnValueChange(value: String) {
+    fun action(action: AddNoteAction) {
+        when (action) {
+            AddNoteAction.BackIconOnClick -> backIconOnClick()
+            AddNoteAction.DeleteNote -> deleteNote()
+            is AddNoteAction.DescriptionOnValueChange -> descriptionOnValueChange(action.value)
+            AddNoteAction.HideConfirmationDialog -> hideConfirmationDialog()
+            AddNoteAction.ShowConfirmationDialog -> showConfirmationDialog()
+            is AddNoteAction.TitleOnValueChange -> titleOnValueChange(action.value)
+        }
+    }
+
+
+    private fun titleOnValueChange(value: String) {
         Log.d(TAG, "titleOnValueChange: title = ${title.value}")
         _title.value = value
     }
 
-    fun descriptionOnValueChange(value: String) {
+    private fun descriptionOnValueChange(value: String) {
         _description.value = value
     }
 
-    fun backIconOnClick() = viewModelScope.launch(Dispatchers.IO) {
+    private fun backIconOnClick() = viewModelScope.launch(Dispatchers.IO) {
 
         val noteModel = NoteModel(
             id = _noteId,
@@ -77,33 +87,28 @@ class AddNoteViewModel(
 
         // Navigate Back
         viewModelScope.launch(Dispatchers.Main) {
-            _event.emit(Event.NavigateBack)
+            _event.emit(AddNoteEvent.NavigateBack)
         }
 
     }
 
-    fun hideConfirmationDialog() {
+    private fun hideConfirmationDialog() {
         _showConfirmationDialog.value = false
     }
 
-    fun showConfirmationDialog() {
+    private fun showConfirmationDialog() {
         _showConfirmationDialog.value = true
     }
 
-    fun deleteNote() = viewModelScope.launch(Dispatchers.IO) {
+    private fun deleteNote() = viewModelScope.launch(Dispatchers.IO) {
         val itemId = _noteId
         deleteNoteUseCase.execute(itemId)
 
         hideConfirmationDialog()
         // Navigate Back
         viewModelScope.launch(Dispatchers.Main) {
-            _event.emit(Event.NavigateBack)
+            _event.emit(AddNoteEvent.NavigateBack)
         }
-    }
-
-
-    sealed class Event {
-        data object NavigateBack: Event()
     }
 
 }

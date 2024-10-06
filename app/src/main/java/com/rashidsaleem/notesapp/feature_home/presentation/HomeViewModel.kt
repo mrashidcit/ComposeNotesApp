@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rashidsaleem.notesapp.Routes
 import com.rashidsaleem.notesapp.feature_core.domain.models.NoteModel
-import com.rashidsaleem.notesapp.feature_core.data.respository.NotesRepository
 import com.rashidsaleem.notesapp.feature_home.domain.GetNotesUseCase
 import com.rashidsaleem.notesapp.feature_home.domain.NoteEvents
 import com.rashidsaleem.notesapp.feature_home.domain.NotesListenerUseCase
@@ -66,17 +65,26 @@ class HomeViewModel: ViewModel() {
         }
     }
 
-    fun listItemOnClick(id: Int) = _scope.launch(Dispatchers.Main) {
-        Log.d(TAG, "listItemOnClick: $id")
+    fun action(action: HomeAction) {
+        when(action) {
+            is HomeAction.ListItemOnClick -> listItemOnClick(action.value)
+            HomeAction.AddNewNote -> addNewNote()
+        }
+    }
+
+    private fun addNewNote() = _scope.launch {
+        val route = Routes.ADD_NOTE + "/-1"
+        _eventFlow.emit(HomeEvent.NavigateNext(route))
+    }
+
+    private fun listItemOnClick(id: Int) = _scope.launch(Dispatchers.Main) {
+        Log.d(TAG, "list    ItemOnClick: $id")
         val route = Routes.ADD_NOTE + "/$id"
         _eventFlow.emit(HomeEvent.NavigateNext(route))
     }
 
 
-    sealed class HomeEvent {
-        data class NavigateNext(val route: String): HomeEvent()
 
-    }
 
 
 }
