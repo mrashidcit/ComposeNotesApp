@@ -1,15 +1,16 @@
-package com.rashidsaleem.notesapp.addNote
+package com.rashidsaleem.notesapp.feature_addNote.presentation
 
 import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.rashidsaleem.notesapp.models.NoteModel
-import com.rashidsaleem.notesapp.respository.NotesRepository
+import com.rashidsaleem.notesapp.feature_addNote.domain.AddNoteUseCase
+import com.rashidsaleem.notesapp.feature_addNote.domain.DeleteNoteUseCase
+import com.rashidsaleem.notesapp.feature_addNote.domain.GetNoteUseCase
+import com.rashidsaleem.notesapp.core.domain.models.NoteModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -20,7 +21,9 @@ class AddNoteViewModel(
 
     private val TAG = "AddNoteViewModel"
 
-    private val repository: NotesRepository = NotesRepository.getInstance()
+    private val _getNoteUseCase: GetNoteUseCase = GetNoteUseCase.getInstance()
+    private val _addNoteUseCase: AddNoteUseCase = AddNoteUseCase.getInstance()
+    private val _deleteNoteUseCase: DeleteNoteUseCase = DeleteNoteUseCase.getInstance()
     private var _noteId: Int = -1
     private var _title: MutableStateFlow<String>  = MutableStateFlow("")
     val title = _title.asStateFlow()
@@ -42,7 +45,7 @@ class AddNoteViewModel(
 
         _scope.launch(Dispatchers.IO) {
             if (noteId != -1) {
-                val note = repository.get(noteId)
+                val note = _getNoteUseCase.execute(noteId)
                 _title.value = note.title
                 _description.value = note.description
             }
@@ -71,11 +74,7 @@ class AddNoteViewModel(
         )
 
         // Save Note
-        if (noteModel.id == -1) {
-            repository.insert(noteModel)
-        } else {
-            repository.update(noteModel)
-        }
+        _addNoteUseCase.execute(noteModel)
 
         // Navigate Back
         viewModelScope.launch(Dispatchers.Main) {
@@ -94,7 +93,7 @@ class AddNoteViewModel(
 
     fun deleteNote() = viewModelScope.launch(Dispatchers.IO) {
         val itemId = _noteId
-        repository.delete(itemId)
+        _deleteNoteUseCase.execute(itemId)
 
         hideConfirmationDialog()
         // Navigate Back

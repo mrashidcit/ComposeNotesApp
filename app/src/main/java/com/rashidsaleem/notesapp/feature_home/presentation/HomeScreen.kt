@@ -1,4 +1,4 @@
-package com.rashidsaleem.notesapp.home
+package com.rashidsaleem.notesapp.feature_home.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -28,10 +28,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.google.gson.Gson
 import com.rashidsaleem.notesapp.R
 import com.rashidsaleem.notesapp.Routes
-import com.rashidsaleem.notesapp.models.NoteModel
 import com.rashidsaleem.notesapp.ui.theme.NotesAppTheme
 import kotlinx.coroutines.flow.collectLatest
 

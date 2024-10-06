@@ -1,4 +1,4 @@
-package com.rashidsaleem.notesapp.data.local
+package com.rashidsaleem.notesapp.core.data.local
 
 import androidx.room.Dao
 import androidx.room.Delete

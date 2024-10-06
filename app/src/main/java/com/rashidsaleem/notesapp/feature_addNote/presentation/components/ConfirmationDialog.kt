@@ -1,4 +1,4 @@
-package com.rashidsaleem.notesapp.addNote.components
+package com.rashidsaleem.notesapp.feature_addNote.presentation.components
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.AlertDialog
@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
 import com.rashidsaleem.notesapp.ui.theme.NotesAppTheme
 
 @Composable
