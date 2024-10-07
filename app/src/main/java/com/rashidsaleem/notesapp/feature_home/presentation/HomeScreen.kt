@@ -45,7 +45,7 @@ fun HomeScreen(
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
-                is HomeViewModel.HomeEvent.NavigateNext -> navigateNext(event.route)
+                is HomeEvent.NavigateNext -> navigateNext(event.route)
             }
         }
     }
@@ -77,9 +77,7 @@ fun HomeScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-//                    viewModel.addNewNote()
-                    val route = Routes.ADD_NOTE + "/-1"
-                    navigateNext(route)
+                    viewModel.action(HomeAction.AddNewNote)
                 },
                 containerColor = MaterialTheme.colorScheme.tertiary
                 ) {
@@ -122,7 +120,7 @@ fun HomeScreen(
                             RoundedCornerShape(10.dp)
                         )
                         .clickable {
-                            viewModel.listItemOnClick(note.id)
+                            viewModel.action(HomeAction.ListItemOnClick(note.id))
                         }
                         .padding(
                             horizontal = 16.dp,
