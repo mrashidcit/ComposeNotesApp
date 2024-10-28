@@ -8,22 +8,26 @@ import com.rashidsaleem.notesapp.feature_addNote.domain.AddNoteUseCase
 import com.rashidsaleem.notesapp.feature_addNote.domain.DeleteNoteUseCase
 import com.rashidsaleem.notesapp.feature_addNote.domain.GetNoteUseCase
 import com.rashidsaleem.notesapp.core.domain.models.NoteModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AddNoteViewModel(
+@HiltViewModel
+class AddNoteViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
+    private val _getNoteUseCase: GetNoteUseCase,
+    private val _addNoteUseCase: AddNoteUseCase,
+    private val _deleteNoteUseCase: DeleteNoteUseCase
 ): ViewModel() {
 
     private val TAG = "AddNoteViewModel"
 
-    private val _getNoteUseCase: GetNoteUseCase = GetNoteUseCase.getInstance()
-    private val _addNoteUseCase: AddNoteUseCase = AddNoteUseCase.getInstance()
-    private val _deleteNoteUseCase: DeleteNoteUseCase = DeleteNoteUseCase.getInstance()
+
     private var _noteId: Int = -1
     private var _title: MutableStateFlow<String>  = MutableStateFlow("")
     val title = _title.asStateFlow()

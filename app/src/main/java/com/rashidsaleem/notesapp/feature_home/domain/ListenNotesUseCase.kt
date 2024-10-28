@@ -2,15 +2,16 @@ package com.rashidsaleem.notesapp.feature_home.domain
 
 import com.rashidsaleem.notesapp.core.domain.models.NoteModel
 import com.rashidsaleem.notesapp.core.data.respository.NotesRepositoryImpl
+import com.rashidsaleem.notesapp.core.domain.repository.NotesRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class ListenNotesUseCase {
-
-    private val repository: NotesRepositoryImpl = NotesRepositoryImpl.getInstance()
+class ListenNotesUseCase(
+    private val repository: NotesRepository,
+) {
 
     suspend fun execute(): Flow<NotesEvent> {
 
@@ -37,18 +38,6 @@ class ListenNotesUseCase {
                 }
 
             }
-        }
-    }
-
-    companion object {
-        private var _instance: ListenNotesUseCase? = null
-
-        fun getInstance(): ListenNotesUseCase {
-            if (_instance == null) {
-                _instance = ListenNotesUseCase()
-            }
-
-            return _instance!!
         }
     }
 
