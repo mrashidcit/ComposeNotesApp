@@ -9,7 +9,7 @@ interface NotesRepository {
     val updateNoteListener: SharedFlow<NoteModel>
     val deleteNoteListener: SharedFlow<Int>
 
-    suspend fun getAll(): List<NoteEntity>
+    suspend fun getAll(): List<NoteModel>
 
     suspend fun get(id: Int): NoteModel
 
