@@ -9,19 +9,25 @@ import com.rashidsaleem.notesapp.feature_home.domain.GetNotesUseCase
 import com.rashidsaleem.notesapp.feature_home.domain.ListenNotesUseCase
 import com.rashidsaleem.notesapp.feature_home.domain.NotesEvent
 import com.rashidsaleem.notesapp.core.domain.models.NoteModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HomeViewModel: ViewModel() {
+@HiltViewModel
+class HomeViewModel @Inject constructor(
+    private val getNotesUseCase: GetNotesUseCase,
+    private val listenNotesUseCase: ListenNotesUseCase
+): ViewModel() {
 
     private val TAG = "HomeViewModel"
 
-    private val getNotesUseCase: GetNotesUseCase = GetNotesUseCase.getInstance()
-    private val listenNotesUseCase: ListenNotesUseCase = ListenNotesUseCase.getInstance()
+
+
     val notesList = mutableStateListOf<NoteModel>()
     private val _eventFlow = MutableSharedFlow<HomeEvent>()
     val eventFlow: SharedFlow<HomeEvent> = _eventFlow.asSharedFlow()

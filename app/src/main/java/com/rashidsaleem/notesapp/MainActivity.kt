@@ -16,7 +16,9 @@ import androidx.navigation.navArgument
 import com.rashidsaleem.notesapp.feature_addNote.presentation.AddNoteScreen
 import com.rashidsaleem.notesapp.feature_home.presentation.HomeScreen
 import com.rashidsaleem.notesapp.ui.theme.NotesAppTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val TAG = "MainActivity"

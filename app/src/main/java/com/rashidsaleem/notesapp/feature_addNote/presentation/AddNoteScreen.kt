@@ -25,6 +25,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.rashidsaleem.notesapp.R
 import com.rashidsaleem.notesapp.feature_addNote.presentation.components.ConfirmationDialog
 import com.rashidsaleem.notesapp.ui.theme.NotesAppTheme
@@ -32,7 +33,7 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun AddNoteScreen(
-    viewModel: AddNoteViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+    viewModel: AddNoteViewModel = hiltViewModel(),
     navigateBack: () -> Unit,
 ) {
 
