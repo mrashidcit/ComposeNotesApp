@@ -11,7 +11,7 @@ interface NotesRepository {
 
     suspend fun getAll(): List<NoteModel>
 
-    suspend fun get(id: Int): NoteModel
+    suspend fun get(id: Int): NoteModel?
 
     suspend fun insert(item: NoteModel): Int
 

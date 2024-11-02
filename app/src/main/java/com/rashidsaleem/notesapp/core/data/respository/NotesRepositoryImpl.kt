@@ -29,8 +29,8 @@ class NotesRepositoryImpl(
         return dao.getAll().map { it.toModel() }
     }
 
-    override suspend fun get(id: Int) : NoteModel {
-        return dao.getItem(id).toModel()
+    override suspend fun get(id: Int) : NoteModel? {
+        return dao.getItem(id)?.toModel()
     }
 
     override suspend fun insert(item: NoteModel): Int {
