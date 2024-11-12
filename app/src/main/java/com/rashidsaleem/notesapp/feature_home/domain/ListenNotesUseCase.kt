@@ -3,6 +3,7 @@ package com.rashidsaleem.notesapp.feature_home.domain
 import com.rashidsaleem.notesapp.core.domain.models.NoteModel
 import com.rashidsaleem.notesapp.core.data.respository.NotesRepositoryImpl
 import com.rashidsaleem.notesapp.core.domain.repository.NotesRepository
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
@@ -10,7 +11,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class ListenNotesUseCase(
-    private val repository: NotesRepository
+    private val repository: NotesRepository,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) {
 
 
@@ -18,7 +20,7 @@ class ListenNotesUseCase(
 
         return channelFlow {
 
-            withContext(Dispatchers.IO) {
+            withContext(ioDispatcher) {
 
                 launch {
                     repository.newNoteInsertionListener.collect { newNote ->
