@@ -6,13 +6,14 @@ import com.rashidsaleem.notesapp.core.data.local.FakeNotesDao
 import com.rashidsaleem.notesapp.core.data.local.NoteEntity
 import com.rashidsaleem.notesapp.core.data.local.toModel
 import com.rashidsaleem.notesapp.core.data.respository.NotesRepositoryImpl
+import com.rashidsaleem.notesapp.core.domain.ListenNotesUseCase
+import com.rashidsaleem.notesapp.core.domain.NotesEvent
 import com.rashidsaleem.notesapp.core.domain.models.NoteModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

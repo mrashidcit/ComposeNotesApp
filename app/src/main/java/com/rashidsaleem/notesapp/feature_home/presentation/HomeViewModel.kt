@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rashidsaleem.notesapp.Routes
 import com.rashidsaleem.notesapp.feature_home.domain.GetNotesUseCase
-import com.rashidsaleem.notesapp.feature_home.domain.ListenNotesUseCase
-import com.rashidsaleem.notesapp.feature_home.domain.NotesEvent
+import com.rashidsaleem.notesapp.core.domain.ListenNotesUseCase
+import com.rashidsaleem.notesapp.core.domain.NotesEvent
 import com.rashidsaleem.notesapp.core.domain.models.NoteModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
