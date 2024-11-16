@@ -10,6 +10,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import javax.inject.Singleton
 
 @Module
@@ -32,4 +34,22 @@ object AppModule {
     fun provideNotesRepository(appDatabase: AppDatabase): NotesRepository {
         return NotesRepositoryImpl(appDatabase.notesDao())
     }
+
+    @IODispatcher
+    @Provides
+    @Singleton
+    fun provideIODispatcher(): CoroutineDispatcher {
+        return Dispatchers.IO
+    }
+
+    @MainDispatcher
+    @Provides
+    @Singleton
+    fun provideMainDispatcher(): CoroutineDispatcher {
+        return Dispatchers.Main
+    }
+
+
+
+
 }
