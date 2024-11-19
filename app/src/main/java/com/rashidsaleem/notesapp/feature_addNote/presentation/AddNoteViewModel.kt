@@ -4,11 +4,14 @@ import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.rashidsaleem.notesapp.core.di.IODispatcher
+import com.rashidsaleem.notesapp.core.di.MainDispatcher
 import com.rashidsaleem.notesapp.feature_addNote.domain.AddNoteUseCase
 import com.rashidsaleem.notesapp.feature_addNote.domain.DeleteNoteUseCase
 import com.rashidsaleem.notesapp.feature_addNote.domain.GetNoteUseCase
 import com.rashidsaleem.notesapp.core.domain.models.NoteModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,6 +26,8 @@ class AddNoteViewModel @Inject constructor(
     private val _getNoteUseCase: GetNoteUseCase,
     private val _addNoteUseCase: AddNoteUseCase,
     private val _deleteNoteUseCase: DeleteNoteUseCase,
+    @IODispatcher private val ioDispatcher: CoroutineDispatcher,
+    @MainDispatcher private val mainDispatcher: CoroutineDispatcher,
 ): ViewModel() {
 
     private val TAG = "AddNoteViewModel"
@@ -48,14 +53,18 @@ class AddNoteViewModel @Inject constructor(
 
         Log.d(TAG, "init: noteId = $noteId")
 
-        _scope.launch(Dispatchers.IO) {
+        getNote(noteId)
+
+    }
+
+    private fun getNote(noteId: Int) {
+        _scope.launch(ioDispatcher) {
             if (noteId != -1) {
                 val note = _getNoteUseCase.execute(noteId) ?: return@launch
                 _title.value = note.title
                 _description.value = note.description
             }
         }
-
     }
 
     fun action(action: AddNoteAction) {
@@ -78,7 +87,7 @@ class AddNoteViewModel @Inject constructor(
         _description.value = value
     }
 
-    private fun backIconOnClick() = viewModelScope.launch(Dispatchers.IO) {
+    private fun backIconOnClick() = viewModelScope.launch(ioDispatcher) {
 
         val noteModel = NoteModel(
             id = _noteId,
@@ -90,7 +99,7 @@ class AddNoteViewModel @Inject constructor(
         _addNoteUseCase.execute(noteModel)
 
         // Navigate Back
-        viewModelScope.launch(Dispatchers.Main) {
+        viewModelScope.launch(mainDispatcher) {
             _event.emit(AddNoteEvent.NavigateBack)
         }
 
@@ -104,13 +113,13 @@ class AddNoteViewModel @Inject constructor(
         _showConfirmationDialog.value = true
     }
 
-    private fun deleteNote() = viewModelScope.launch(Dispatchers.IO) {
+    private fun deleteNote() = viewModelScope.launch(ioDispatcher) {
         val itemId = _noteId
         _deleteNoteUseCase.execute(itemId)
 
         hideConfirmationDialog()
         // Navigate Back
-        viewModelScope.launch(Dispatchers.Main) {
+        viewModelScope.launch(mainDispatcher) {
             _event.emit(AddNoteEvent.NavigateBack)
         }
     }
