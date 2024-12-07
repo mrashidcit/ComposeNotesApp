@@ -23,6 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -77,6 +79,9 @@ fun HomeScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
+                modifier = Modifier.semantics {
+                    contentDescription = "Add New Note"
+                },
                 onClick = {
                     viewModel.action(HomeAction.AddNewNote)
                 },
@@ -120,6 +125,9 @@ fun HomeScreen(
                         .clip(
                             RoundedCornerShape(10.dp)
                         )
+                        .semantics {
+                            contentDescription = note.id.toString()
+                        }
                         .clickable {
                             viewModel.action(HomeAction.ListItemOnClick(note.id))
                         }

@@ -2,7 +2,7 @@ package com.rashidsaleem.notesapp.feature_home.presentation
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth
-import com.rashidsaleem.notesapp.DummyNotesEntity
+import com.rashidsaleem.notesapp.core.data.local.DummyNotesEntity
 import com.rashidsaleem.notesapp.Routes
 import com.rashidsaleem.notesapp.core.data.local.FakeNotesDao
 import com.rashidsaleem.notesapp.core.data.local.NoteEntity

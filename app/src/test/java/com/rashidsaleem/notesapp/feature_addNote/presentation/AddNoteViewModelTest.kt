@@ -3,7 +3,7 @@ package com.rashidsaleem.notesapp.feature_addNote.presentation
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
 import com.google.common.truth.Truth
-import com.rashidsaleem.notesapp.DummyNotesEntity
+import com.rashidsaleem.notesapp.core.data.local.DummyNotesEntity
 import com.rashidsaleem.notesapp.core.data.local.FakeNotesDao
 import com.rashidsaleem.notesapp.core.data.local.NotesDao
 import com.rashidsaleem.notesapp.core.data.local.toModel

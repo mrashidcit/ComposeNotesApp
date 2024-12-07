@@ -2,18 +2,15 @@ package com.rashidsaleem.notesapp.feature_addNote.domain
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth
-import com.rashidsaleem.notesapp.DummyNotesEntity
+import com.rashidsaleem.notesapp.core.data.local.DummyNotesEntity
 import com.rashidsaleem.notesapp.core.data.local.FakeNotesDao
 import com.rashidsaleem.notesapp.core.data.local.NotesDao
 import com.rashidsaleem.notesapp.core.data.respository.NotesRepositoryImpl
-import com.rashidsaleem.notesapp.core.domain.ListenNotesUseCase
 import com.rashidsaleem.notesapp.core.domain.repository.NotesRepository
-import com.rashidsaleem.notesapp.feature_home.domain.GetNotesUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

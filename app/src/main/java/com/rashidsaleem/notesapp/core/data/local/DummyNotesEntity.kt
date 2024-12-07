@@ -1,6 +1,4 @@
-package com.rashidsaleem.notesapp
-
-import com.rashidsaleem.notesapp.core.data.local.NoteEntity
+package com.rashidsaleem.notesapp.core.data.local
 
 object DummyNotesEntity {
     val note1 = NoteEntity(1, "Note 1 Title", "My first note")

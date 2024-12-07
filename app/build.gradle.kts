@@ -97,6 +97,7 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation(platform("androidx.compose:compose-bom:2024.05.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    androidTestImplementation("com.google.truth:truth:1.4.4")
 
     // debug
     debugImplementation(platform("androidx.compose:compose-bom:2024.05.00"))
