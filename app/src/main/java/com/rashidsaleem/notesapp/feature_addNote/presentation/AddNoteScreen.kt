@@ -22,6 +22,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -71,6 +73,9 @@ fun AddNoteScreen(
             Icon(
                 modifier = Modifier
                     .size(20.dp)
+                    .semantics {
+                        contentDescription = "Navigate Back"
+                    }
                     .clickable {
                         viewModel.action(AddNoteAction.BackIconOnClick)
                     }
@@ -82,6 +87,9 @@ fun AddNoteScreen(
             Icon(
                 modifier = Modifier
                     .size(20.dp)
+                    .semantics {
+                        contentDescription = "Delete Note"
+                    }
                     .clickable {
                         viewModel.action(AddNoteAction.ShowConfirmationDialog)
                     }
@@ -97,7 +105,10 @@ fun AddNoteScreen(
             onValueChange = {
                 viewModel.action(AddNoteAction.TitleOnValueChange(it))
             },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth().semantics {
+                    contentDescription = "Enter Title"
+                },
             placeholder = {
                 Text(text = "Enter Title")
             },
@@ -113,7 +124,9 @@ fun AddNoteScreen(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f)
+                .weight(1f).semantics {
+                    contentDescription = "Enter Description"
+                }
             ,
             placeholder = {
                 Text(text = "Enter Description")

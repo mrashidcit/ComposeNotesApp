@@ -9,6 +9,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
@@ -22,7 +24,10 @@ fun ConfirmationDialog(
     ) {
 
     AlertDialog(
-        modifier = modifier,
+        modifier = modifier
+            .semantics {
+            contentDescription = "Confirmation Dialog"
+        },
         onDismissRequest = { dismissButton() },
         title = {
             Text(
@@ -38,6 +43,9 @@ fun ConfirmationDialog(
         },
         dismissButton = {
             Button(
+                modifier = Modifier.semantics {
+                    contentDescription = "No"
+                },
                 onClick = dismissButton
             ) {
                Text("No")
@@ -45,6 +53,9 @@ fun ConfirmationDialog(
         },
         confirmButton = {
             Button(
+                modifier = Modifier.semantics {
+                    contentDescription = "Yes"
+                },
                 onClick = confirmButton,
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.error
