@@ -88,7 +88,7 @@ class AddNoteViewModel @Inject constructor(
     }
 
     private fun backIconOnClick() = viewModelScope.launch(ioDispatcher) {
-
+        Log.d(TAG, "backIconOnClick: START")
         val noteModel = NoteModel(
             id = _noteId,
             title = _title.value,
@@ -102,7 +102,7 @@ class AddNoteViewModel @Inject constructor(
         viewModelScope.launch(mainDispatcher) {
             _event.emit(AddNoteEvent.NavigateBack)
         }
-
+        Log.d(TAG, "backIconOnClick: END")
     }
 
     private fun hideConfirmationDialog() {

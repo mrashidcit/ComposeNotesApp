@@ -1,5 +1,6 @@
 package com.rashidsaleem.notesapp.feature_addNote.presentation
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -33,6 +34,8 @@ import com.rashidsaleem.notesapp.feature_addNote.presentation.components.Confirm
 import com.rashidsaleem.notesapp.ui.theme.NotesAppTheme
 import kotlinx.coroutines.flow.collectLatest
 
+private const val TAG = "AddNoteScreen"
+
 @Composable
 fun AddNoteScreen(
     viewModel: AddNoteViewModel = hiltViewModel(),
@@ -45,6 +48,7 @@ fun AddNoteScreen(
 
     LaunchedEffect(key1 = true) {
         viewModel.event.collectLatest { event ->
+            Log.d(TAG, "AddNoteScreen - viewModel.event.collectLatest: ${event.javaClass.simpleName}")
             when(event) {
                 is AddNoteEvent.NavigateBack -> navigateBack()
             }
@@ -106,7 +110,8 @@ fun AddNoteScreen(
                 viewModel.action(AddNoteAction.TitleOnValueChange(it))
             },
             modifier = Modifier
-                .fillMaxWidth().semantics {
+                .fillMaxWidth()
+                .semantics {
                     contentDescription = "Enter Title"
                 },
             placeholder = {
@@ -124,7 +129,8 @@ fun AddNoteScreen(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f).semantics {
+                .weight(1f)
+                .semantics {
                     contentDescription = "Enter Description"
                 }
             ,

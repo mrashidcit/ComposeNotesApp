@@ -1,5 +1,6 @@
 package com.rashidsaleem.notesapp.feature_addNote.presentation
 
+import android.util.Log
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -18,6 +19,7 @@ import com.rashidsaleem.notesapp.feature_addNote.domain.AddNoteUseCase
 import com.rashidsaleem.notesapp.feature_addNote.domain.DeleteNoteUseCase
 import com.rashidsaleem.notesapp.feature_addNote.domain.GetNoteUseCase
 import kotlinx.coroutines.Dispatchers
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -66,6 +68,7 @@ class AddNoteScreenTest {
         )
     }
 
+
     @Test
     fun addNoteScreen_addTitleAndDescription_titleAndDescriptionShouldBeVisible() {
 
@@ -93,21 +96,35 @@ class AddNoteScreenTest {
 
     @Test
     fun tapOnBackButton_navigateToPreviousScreen() {
-
+        println("tapOnBackButton_navigateToPreviousScreen: START")
+        val addNoteViewModel = AddNoteViewModel(
+            savedStateHandle = savedStateHandle,
+            _getNoteUseCase = getNoteUseCase,
+            _addNoteUseCase = addNoteUseCase,
+            _deleteNoteUseCase = deleteNoteUseCase,
+            ioDispatcher = Dispatchers.IO,
+            mainDispatcher = Dispatchers.Main
+        )
         var shouldNavigateBack = false
 
         composeTestRule.setContent {
             AddNoteScreen(
-                viewModel = viewModel,
+                viewModel = addNoteViewModel,
             ) {
                 shouldNavigateBack = true
             }
         }
 
+        println("tapOnBackButton_navigateToPreviousScreen: tap on backButton")
         composeTestRule.onNodeWithContentDescription("Navigate Back").performClick()
 
-        composeTestRule.mainClock.advanceTimeBy(6000L)
+//        composeTestRule.mainClock.advanceTimeBy(10000L)
+        // Attempt - 1
+        composeTestRule.waitUntil(6000L) {
+            shouldNavigateBack
+        }
 
+        println("tapOnBackButton_navigateToPreviousScreen: END")
         Truth.assertThat(shouldNavigateBack).isTrue()
 
     }
@@ -168,7 +185,9 @@ class AddNoteScreenTest {
             .onNodeWithContentDescription("Yes")
             .performClick()
 
-        composeTestRule.mainClock.advanceTimeBy(6000L)
+        composeTestRule.waitUntil(6000L) {
+            shouldNavigateBack
+        }
 
         Truth.assertThat(shouldNavigateBack).isTrue()
 
