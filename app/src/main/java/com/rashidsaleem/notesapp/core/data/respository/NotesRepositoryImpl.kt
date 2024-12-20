@@ -54,4 +54,7 @@ class NotesRepositoryImpl(
         _deleteNoteListener.emit(id)
     }
 
+    override suspend fun deleteAll() {
+        dao.deleteAllItems()
+    }
 }

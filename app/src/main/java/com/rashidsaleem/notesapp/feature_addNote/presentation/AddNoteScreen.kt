@@ -60,6 +60,9 @@ fun AddNoteScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .semantics {
+                    contentDescription = "AddNoteScreen"
+                }
                 .background(
                     color = MaterialTheme.colorScheme.primary,
                 )

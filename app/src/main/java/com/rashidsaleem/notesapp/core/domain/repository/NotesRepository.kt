@@ -18,4 +18,5 @@ interface NotesRepository {
     suspend fun update(item: NoteModel)
 
     suspend fun delete(id: Int)
+    suspend fun deleteAll()
 }

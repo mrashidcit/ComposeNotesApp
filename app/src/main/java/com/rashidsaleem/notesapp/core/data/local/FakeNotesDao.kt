@@ -43,4 +43,8 @@ class FakeNotesDao(
         if (itemIndex == -1) return
         items.removeAt(itemIndex)
     }
+
+    override fun deleteAllItems() {
+        items.clear()
+    }
 }
