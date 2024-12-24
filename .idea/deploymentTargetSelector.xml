@@ -5,10 +5,16 @@
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="AddNoteScreenTest">
+      <SelectionState runConfigName="editOneNote_updatedNoteShouldBeReflectedInHomeScreenListing()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="addOneNewNote_newNoteShouldBeReflectedOnHomeScreen()">
+      <SelectionState runConfigName="edit1stNoteTwoTimes_updatedNoteShouldBeReflectedInHomeScreenListing()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="editTwoNotesOneByOne_updatedNotesShouldBeReflectedInHomeScreenListing()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="EditNoteTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

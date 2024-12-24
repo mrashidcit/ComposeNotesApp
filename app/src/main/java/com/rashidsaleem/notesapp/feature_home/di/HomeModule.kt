@@ -19,10 +19,7 @@ object HomeModule {
         return GetNotesUseCase(repository)
     }
 
-    @Provides
-    fun provideListenNotesUseCase(repository: NotesRepository): ListenNotesUseCase {
-        return ListenNotesUseCase(repository)
-    }
+
 
 
 }

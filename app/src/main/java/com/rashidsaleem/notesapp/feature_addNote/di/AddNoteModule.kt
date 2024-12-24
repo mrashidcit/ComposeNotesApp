@@ -19,11 +19,6 @@ object AddNoteModule {
     }
 
     @Provides
-    fun provideAddNoteUseCase(repository: NotesRepository) : AddNoteUseCase {
-        return AddNoteUseCase(repository)
-    }
-
-    @Provides
     fun provideDeleteNoteUseCase(repository: NotesRepository): DeleteNoteUseCase {
         return DeleteNoteUseCase(repository)
     }

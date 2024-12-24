@@ -5,7 +5,9 @@ import androidx.room.Room
 import com.rashidsaleem.notesapp.core.data.local.AppDatabase
 import com.rashidsaleem.notesapp.core.data.respository.NotesRepositoryImpl
 import com.rashidsaleem.notesapp.core.domain.DeleteAllNotesUseCase
+import com.rashidsaleem.notesapp.core.domain.ListenNotesUseCase
 import com.rashidsaleem.notesapp.core.domain.repository.NotesRepository
+import com.rashidsaleem.notesapp.feature_addNote.domain.AddNoteUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -59,6 +61,17 @@ object AppModule {
     }
 
 
+    @Provides
+    @Singleton
+    fun provideAddNoteUseCase(repository: NotesRepository) : AddNoteUseCase {
+        return AddNoteUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideListenNotesUseCase(repository: NotesRepository): ListenNotesUseCase {
+        return ListenNotesUseCase(repository)
+    }
 
 
 }
