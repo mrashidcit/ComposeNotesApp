@@ -106,7 +106,9 @@ class AddNoteScreenTest {
 
         composeTestRule.onNodeWithContentDescription("Navigate Back").performClick()
 
-        composeTestRule.mainClock.advanceTimeBy(6000L)
+        composeTestRule.waitUntil(4000L) {
+            shouldNavigateBack
+        }
 
         Truth.assertThat(shouldNavigateBack).isTrue()
 
@@ -168,7 +170,9 @@ class AddNoteScreenTest {
             .onNodeWithContentDescription("Yes")
             .performClick()
 
-        composeTestRule.mainClock.advanceTimeBy(6000L)
+        composeTestRule.waitUntil(4000L) {
+            shouldNavigateBack
+        }
 
         Truth.assertThat(shouldNavigateBack).isTrue()
 
