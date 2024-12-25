@@ -27,10 +27,9 @@ class HomeViewModel @Inject constructor(
     private val listenNotesUseCase: ListenNotesUseCase,
     @IODispatcher private val ioDispatcher: CoroutineDispatcher,
     @MainDispatcher private val mainDispatcher: CoroutineDispatcher
-): ViewModel() {
+) : ViewModel() {
 
     private val TAG = "HomeViewModel"
-
 
 
     val notesList = mutableStateListOf<NoteModel>()
@@ -53,6 +52,7 @@ class HomeViewModel @Inject constructor(
                             notesList[itemIndex] = event.value
                         }
                     }
+
                     is NotesEvent.Delete -> {
                         val itemIndex = notesList.indexOfFirst { it.id == event.value }
 
@@ -78,7 +78,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun action(action: HomeAction) {
-        when(action) {
+        when (action) {
             HomeAction.AddNewNote -> addNewNote()
             is HomeAction.ListItemOnClick -> listItemOnClick(action.value)
         }
