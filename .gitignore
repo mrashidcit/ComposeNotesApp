@@ -13,3 +13,7 @@
 .externalNativeBuild
 .cxx
 local.properties
+/.idea/.name
+/.idea/AndroidProjectSystem.xml
+/.kotlin/errors/errors-1787048947687.log
+/.idea/studiobot.xml
