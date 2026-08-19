@@ -17,3 +17,8 @@ local.properties
 /.idea/AndroidProjectSystem.xml
 /.kotlin/errors/errors-1787048947687.log
 /.idea/studiobot.xml
+
+# Signing / release secrets - never commit
+keystore.properties
+*.jks
+*.keystore

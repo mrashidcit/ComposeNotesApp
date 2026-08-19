@@ -1,0 +1,7 @@
+Features
+View all notes in a list
+Create new notes
+Update existing notes
+Delete notes
+
+This app is created as a learning and testing project to demonstrate modern Android development using Jetpack Compose.
