@@ -113,6 +113,7 @@
               <option name="preferredColumnWidths">
                 <map>
                   <entry key="Duration" value="90" />
+                  <entry key="Pixel_4_-_12L" value="120" />
                   <entry key="Pixel_4_API_30" value="120" />
                   <entry key="Tests" value="360" />
                 </map>
