@@ -81,6 +81,20 @@ jobs:
           disable-animations: true
           script: bundle exec fastlane android instrumented_test
 
+      # Runs even if the tests above failed, so you can always download and
+      # open the HTML report locally instead of relying on the ephemeral
+      # runner's filesystem (which is deleted the moment the job ends).
+      - name: Upload instrumented test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: instrumented-test-report
+          path: |
+            app/build/reports/androidTests/connected
+            app/build/outputs/androidTest-results/connected
+          retention-days: 14
+          if-no-files-found: ignore
+
   deploy-internal:
     name: Deploy to Internal Testing track
     needs: [unit-tests, instrumented-tests]
