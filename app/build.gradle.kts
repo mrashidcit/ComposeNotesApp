@@ -20,14 +20,14 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace = "com.rashidsaleem.notesapp"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.rashidsaleem.notesapp"
         minSdk = 24
-        targetSdk = 35
-        versionCode = 3
-        versionName = "1.0.3"
+        targetSdk = 36
+        versionCode = 4
+        versionName = "1.0.4"
 
         testInstrumentationRunner = "com.rashidsaleem.notesapp.HiltTestRunner"
         vectorDrawables {
