@@ -85,6 +85,9 @@ class AddNoteUseCaseTest {
         )
         Truth.assertThat(result?.value).isEqualTo(newNote)
 
+        // TODO() - Wrong assert for testing
+        // Truth.assertThat(true).isEqualTo(false)
+
     }
 
     @Test

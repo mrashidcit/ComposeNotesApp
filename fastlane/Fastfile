@@ -16,9 +16,14 @@
 default_platform(:android)
 
 platform :android do
-  desc "Runs all the tests"
+  desc "Runs all the unit tests"
   lane :test do
     gradle(task: "test")
+  end
+
+  desc "Runs instrumented (on-device / emulator) tests"
+  lane :instrumented_test do
+    gradle(task: "connectedAndroidTest")
   end
 
   desc "Submit a new Beta Build to Crashlytics Beta"
