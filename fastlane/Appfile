@@ -1,2 +1,6 @@
-json_key_file("/Users/rashidsaleem/Documents/RashidSaleem/ComposeNotesApp/keys/compose-notes-app-1e2e20dea4bc.json") # Path to the json secret file - Follow https://docs.fastlane.tools/actions/supply/#setup to get one
+# Path to the Play Console service-account JSON key.
+# Locally this falls back to the file on disk. In CI, the key is decoded
+# from a secret at runtime and its path is passed in via PLAY_STORE_JSON_KEY_PATH.
+# Follow https://docs.fastlane.tools/actions/supply/#setup to get one
+json_key_file(ENV["PLAY_STORE_JSON_KEY_PATH"] || "/Users/rashidsaleem/Documents/RashidSaleem/ComposeNotesApp/keys/compose-notes-app-1e2e20dea4bc.json")
 package_name("com.rashidsaleem.notesapp") # e.g. com.krausefx.app

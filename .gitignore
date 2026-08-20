@@ -22,3 +22,4 @@ local.properties
 keystore.properties
 *.jks
 *.keystore
+fastlane/play-store-key.json
