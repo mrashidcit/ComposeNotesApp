@@ -3,7 +3,7 @@ name: Deploy to Play Store Internal Testing
 on:
   push:
     branches:
-      - internal-testing
+      - internal-testing-github-without-fastlane
 
 jobs:
   unit-tests:
@@ -24,17 +24,11 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: ".ruby-version"
-          bundler-cache: true
-
       - name: Grant execute permission to gradlew
         run: chmod +x gradlew
 
       - name: Run unit tests
-        run: bundle exec fastlane android test
+        run: ./gradlew test
 
   instrumented-tests:
     name: Instrumented tests
@@ -53,12 +47,6 @@ jobs:
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: ".ruby-version"
-          bundler-cache: true
 
       - name: Grant execute permission to gradlew
         run: chmod +x gradlew
@@ -79,7 +67,7 @@ jobs:
           arch: x86_64
           profile: pixel_5
           disable-animations: true
-          script: bundle exec fastlane android instrumented_test
+          script: ./gradlew connectedAndroidTest
 
       # Runs even if the tests above failed, so you can always download and
       # open the HTML report locally instead of relying on the ephemeral
@@ -114,12 +102,6 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: ".ruby-version"
-          bundler-cache: true
-
       - name: Decode signing keystore
         env:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
@@ -144,12 +126,20 @@ jobs:
         env:
           PLAY_STORE_JSON_KEY_BASE64: ${{ secrets.PLAY_STORE_JSON_KEY_BASE64 }}
         run: |
-          echo "$PLAY_STORE_JSON_KEY_BASE64" | base64 --decode > fastlane/play-store-key.json
+          mkdir -p secrets
+          echo "$PLAY_STORE_JSON_KEY_BASE64" | base64 --decode > secrets/play-store-key.json
 
       - name: Grant execute permission to gradlew
         run: chmod +x gradlew
 
+      - name: Build release bundle
+        run: ./gradlew clean bundleRelease
+
       - name: Deploy to Internal Testing track
-        env:
-          PLAY_STORE_JSON_KEY_PATH: ${{ github.workspace }}/fastlane/play-store-key.json
-        run: bundle exec fastlane android internal
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJson: secrets/play-store-key.json
+          packageName: com.rashidsaleem.notesapp
+          releaseFiles: app/build/outputs/bundle/release/app-release.aab
+          track: internal
+          status: completed

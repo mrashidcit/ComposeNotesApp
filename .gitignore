@@ -23,4 +23,7 @@ local.properties
 keystore.properties
 *.jks
 *.keystore
-fastlane/play-store-key.json
+secrets/
+
+# Scratch folder used while migrating off fastlane; safe to delete
+_to_delete/
