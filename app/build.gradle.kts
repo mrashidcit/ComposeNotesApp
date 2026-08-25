@@ -18,6 +18,22 @@ if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 }
 
+// --- Auto-incrementing version ---
+// Google Play rejects any upload whose versionCode was used before, so it
+// must strictly increase on every release build. GitHub Actions sets
+// GITHUB_RUN_NUMBER for every workflow run, and that number only ever goes
+// up for a given workflow file - so CI builds derive versionCode from it.
+// BASE_VERSION_CODE is the last versionCode assigned by hand; adding the
+// run number to it keeps CI builds comfortably ahead of that, even on the
+// very first CI run.
+// Local/debug builds (no GITHUB_RUN_NUMBER) fall back to BASE_VERSION_CODE,
+// or to -PversionCode=<n> if you need to test a specific value locally.
+val baseVersionCode = 5
+val appVersionCode = System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull()?.let { baseVersionCode + it }
+    ?: (project.findProperty("versionCode") as String?)?.toIntOrNull()
+    ?: baseVersionCode
+val appVersionName = "1.0.$appVersionCode"
+
 android {
     namespace = "com.rashidsaleem.notesapp"
     compileSdk = 36
@@ -26,8 +42,8 @@ android {
         applicationId = "com.rashidsaleem.notesapp"
         minSdk = 24
         targetSdk = 36
-        versionCode = 5
-        versionName = "1.0.5"
+        versionCode = appVersionCode
+        versionName = appVersionName
 
         testInstrumentationRunner = "com.rashidsaleem.notesapp.HiltTestRunner"
         vectorDrawables {
